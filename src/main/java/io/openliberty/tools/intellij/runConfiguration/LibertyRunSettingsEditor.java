@@ -20,6 +20,8 @@ import io.openliberty.tools.intellij.LibertyModules;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * Editor associated with Liberty run & debug configurations. Defines when configuration changes are updated, default values, etc.
@@ -30,27 +32,27 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private LabeledComponent<EditorTextField> editableParams;
     private LabeledComponent<ComboBox> libertyModule;
     private StateRestoringCheckBox runInContainerCheckBox;
-    private JTextField textField1;
-    private JCheckBox checkBox2;
-    private JTextField textField2;
+    private JCheckBox skipTestsCheckBox;
     private JPanel checkboxpannel;
     private JPanel panelcheck;
     private JButton sbutton;
-    private JCheckBox checkBox1;
-    private JCheckBox checkBox3;
-    private JTextField textField3;
-    private JCheckBox checkBox4;
-    private JTextField textField4;
-    private JCheckBox checkBox5;
-    private JTextField textField5;
-    private JCheckBox checkBox6;
-    private JTextField textField6;
-    private JCheckBox checkBox7;
-    private JTextField textField7;
-    private JCheckBox checkBox8;
-    private JTextField textField8;
-    private JTextField textField9;
-    private JCheckBox checkBox9;
+    private JCheckBox libertyDebugCheckBox;
+    private JCheckBox libertyDebugPortCheckBox;
+    private JTextField a7777TextField;
+    private JCheckBox compileWaitCheckBox;
+    private JTextField a05TextField;
+    private JCheckBox serverStartTimeoutCheckBox;
+    private JTextField a90TextField;
+    private JCheckBox verifyAppStartTimeoutCheckBox;
+    private JTextField a30TextField;
+    private JCheckBox generateFeaturesCheckBox;
+    private JCheckBox generateFeaturesCheckBox1;
+    private JComboBox comboBox1;
+    private JCheckBox hotTestCheckBox;
+    private JComboBox comboBox2;
+    private JComboBox comboBox3;
+    private JComboBox comboBox4;
+    private JComboBox comboBox5;
 
     JButton bt2 = new JButton();
 
@@ -60,7 +62,37 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         libertyModule.getComponent().setModel(new DefaultComboBoxModel(LibertyModules.getInstance().getLibertyBuildFilesAsString(project).toArray()));
         sbutton.addActionListener(e -> selectionButtonPressed());
 
-    }
+        hotTestCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    comboBox1.setEnabled(true);
+                    editableParams.getComponent().setText("--DHotTest=true");
+
+
+                } else {//checkbox has been deselected
+                    comboBox1.setEnabled(false);
+                    editableParams.getComponent().setText("");
+                };
+            }
+
+        });
+
+        comboBox1.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Object item = e.getItem();
+                    if( item == "true"){
+                        editableParams.getComponent().setText("--DHotTest=true");
+                    } else if (item == "false") {
+                        editableParams.getComponent().setText("--DHotTest=false");
+                    }
+                }
+            }
+        });
+   }
 
     @Override
     protected void resetEditorFrom(@NotNull LibertyRunConfiguration configuration) {
@@ -76,6 +108,7 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         }
         runInContainerCheckBox.setSelected(configuration.runInContainer());
         editableParams.getComponent().setText(configuration.getParams());
+        comboBox1.setEnabled(false);
     }
 
     @Override
