@@ -30,9 +30,22 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private LabeledComponent<EditorTextField> editableParams;
     private LabeledComponent<ComboBox> libertyModule;
     private StateRestoringCheckBox runInContainerCheckBox;
+    private JTextField textField1;
+    private JCheckBox checkBox2;
+    private JTextField textField2;
+    private JPanel checkboxpannel;
+    private JPanel panelcheck;
+    private JButton sbutton;
+    private JCheckBox checkBox1;
+
+    JButton bt2 = new JButton();
+
+    boolean isVisible = false;
 
     public LibertyRunSettingsEditor(Project project) {
         libertyModule.getComponent().setModel(new DefaultComboBoxModel(LibertyModules.getInstance().getLibertyBuildFilesAsString(project).toArray()));
+        sbutton.addActionListener(e -> selectionButtonPressed());
+
     }
 
     @Override
@@ -71,5 +84,10 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         editableParams = new LabeledComponent<>();
         editableParams.setComponent(new EditorTextField());
         runInContainerCheckBox = new StateRestoringCheckBox();
+    }
+
+    public void selectionButtonPressed() {
+      isVisible = !isVisible;
+      checkboxpannel.setVisible(isVisible);
     }
 }
