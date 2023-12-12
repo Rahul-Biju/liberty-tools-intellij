@@ -37,6 +37,20 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private JPanel panelcheck;
     private JButton sbutton;
     private JCheckBox checkBox1;
+    private JCheckBox checkBox3;
+    private JTextField textField3;
+    private JCheckBox checkBox4;
+    private JTextField textField4;
+    private JCheckBox checkBox5;
+    private JTextField textField5;
+    private JCheckBox checkBox6;
+    private JTextField textField6;
+    private JCheckBox checkBox7;
+    private JTextField textField7;
+    private JCheckBox checkBox8;
+    private JTextField textField8;
+    private JTextField textField9;
+    private JCheckBox checkBox9;
 
     JButton bt2 = new JButton();
 
