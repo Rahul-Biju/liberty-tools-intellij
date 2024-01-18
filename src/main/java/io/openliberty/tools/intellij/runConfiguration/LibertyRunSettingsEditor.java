@@ -20,6 +20,7 @@ import io.openliberty.tools.intellij.LibertyModules;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -121,6 +122,8 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     @NotNull
     @Override
     protected JComponent createEditor() {
+      //  root.setSize(new Dimension(2000, 2000));
+        root.setPreferredSize(new Dimension(1000,210));
         return root;
     }
 
