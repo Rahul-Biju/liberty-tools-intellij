@@ -68,11 +68,17 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
                     comboBox1.setEnabled(true);
+                    //comboBox1.setPreferredSize(new Dimension(50, 30));
+                  //  comboBox1.setMinimumSize(new Dimension(100, 30));
+                   // comboBox1.setMaximumSize(new Dimension(200, 30));
                     editableParams.getComponent().setText("--DHotTest=true");
 
 
                 } else {//checkbox has been deselected
                     comboBox1.setEnabled(false);
+                   // comboBox1.setPreferredSize(new Dimension(50, 30));
+                  //  comboBox1.setMinimumSize(new Dimension(100, 30));
+                   // comboBox1.setMaximumSize(new Dimension(200, 30));
                     editableParams.getComponent().setText("");
                 };
             }
@@ -123,7 +129,7 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     @Override
     protected JComponent createEditor() {
       //  root.setSize(new Dimension(2000, 2000));
-        root.setPreferredSize(new Dimension(1000,210));
+        root.setPreferredSize(new Dimension(750,210));
         return root;
     }
 
