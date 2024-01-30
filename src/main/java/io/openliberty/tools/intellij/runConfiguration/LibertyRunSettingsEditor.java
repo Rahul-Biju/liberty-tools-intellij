@@ -47,7 +47,7 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private JCheckBox verifyAppStartTimeoutCheckBox;
     private JTextField a30TextField;
     private JCheckBox generateFeaturesCheckBox;
-    private JCheckBox generateFeaturesCheckBox1;
+    private JCheckBox skipInstallFeatureCheckBox;
     private JComboBox comboBox1;
     private JCheckBox hotTestCheckBox;
     private JComboBox comboBox2;
@@ -68,19 +68,13 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
                     comboBox1.setEnabled(true);
-                    //comboBox1.setPreferredSize(new Dimension(50, 30));
-                  //  comboBox1.setMinimumSize(new Dimension(100, 30));
-                   // comboBox1.setMaximumSize(new Dimension(200, 30));
                     editableParams.getComponent().setText("--DHotTest=true");
 
 
                 } else {//checkbox has been deselected
                     comboBox1.setEnabled(false);
-                   // comboBox1.setPreferredSize(new Dimension(50, 30));
-                  //  comboBox1.setMinimumSize(new Dimension(100, 30));
-                   // comboBox1.setMaximumSize(new Dimension(200, 30));
                     editableParams.getComponent().setText("");
-                };
+                }
             }
 
         });
@@ -93,13 +87,167 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
                     Object item = e.getItem();
                     if( item == "true"){
                         editableParams.getComponent().setText("--DHotTest=true");
-                    } else if (item == "false") {
+                    } else if (item == "false") {  // add false to textArea
                         editableParams.getComponent().setText("--DHotTest=false");
                     }
                 }
             }
         });
+
+        skipTestsCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    comboBox2.setEnabled(true);
+                    editableParams.getComponent().setText("--skipTests=true");
+
+
+                } else {//checkbox has been deselected
+                    comboBox2.setEnabled(false);
+                    editableParams.getComponent().setText("");
+                }
+
+            }
+
+        });
+
+        comboBox2.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Object item = e.getItem();
+                    if( item == "true"){
+                        editableParams.getComponent().setText("--skipTests=true");
+                    } else if (item == "false") {
+                        editableParams.getComponent().setText("--skipTests=false");
+                    }
+                }
+            }
+        });
+
+        libertyDebugPortCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+                a7777TextField.setEnabled(isSelected); // Enable or disable textField1
+                if (isSelected) {
+                    // If the checkbox is selected, update textField2 with textField1's content
+                    editableParams.getComponent().setText("--libertyDebugPort=7777");
+                } else {
+                    // If the checkbox is deselected, clear textField2
+                    editableParams.getComponent().setText("");
+                }
+            }
+        });
+
+        compileWaitCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+                a05TextField.setEnabled(isSelected); // Enable or disable textField1
+                if (isSelected) {
+                    // If the checkbox is selected, update textField2 with textField1's content
+                    editableParams.getComponent().setText("--compileWait=0.5");
+                } else {
+                    // If the checkbox is deselected, clear textField2
+                    editableParams.getComponent().setText("");
+                }
+            }
+        });
+
+        serverStartTimeoutCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+                a90TextField.setEnabled(isSelected); // Enable or disable textField1
+                if (isSelected) {
+                    // If the checkbox is selected, update textField2 with textField1's content
+                    editableParams.getComponent().setText("--serverStartTimeout=90");
+                } else {
+                    // If the checkbox is deselected, clear textField2
+                    editableParams.getComponent().setText("");
+                }
+            }
+        });
+
+        verifyAppStartTimeoutCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+                a30TextField.setEnabled(isSelected); // Enable or disable textField1
+                if (isSelected) {
+                    // If the checkbox is selected, update textField2 with textField1's content
+                    editableParams.getComponent().setText("--verifyAppStartTimeoutCheckBox=30");
+                } else {
+                    // If the checkbox is deselected, clear textField2
+                    editableParams.getComponent().setText("");
+                }
+            }
+        });
+
+        generateFeaturesCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+                comboBox4.setEnabled(isSelected); // Enable or disable textField1
+                if (isSelected) {
+                    // If the checkbox is selected, update textField2 with textField1's content
+                    editableParams.getComponent().setText("--generateFeaturesCheckBox=true");
+                } else {
+                    // If the checkbox is deselected, clear textField2
+                    editableParams.getComponent().setText("");
+                }
+            }
+        });
+
+        comboBox4.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Object item = e.getItem();
+                    if( item == "true"){
+                        editableParams.getComponent().setText("--generateFeaturesCheckBox=true");
+                    } else if (item == "false") {
+                        editableParams.getComponent().setText("--generateFeaturesCheckBox=false");
+                    }
+                }
+            }
+        });
+
+        skipInstallFeatureCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+                comboBox5.setEnabled(isSelected); // Enable or disable textField1
+                if (isSelected) {
+                    // If the checkbox is selected, update textField2 with textField1's content
+                    editableParams.getComponent().setText("--skipInstallFeatureCheckBox=true");
+                } else {
+                    // If the checkbox is deselected, clear textField2
+                    editableParams.getComponent().setText("");
+                }
+            }
+        });
+
+        comboBox5.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Object item = e.getItem();
+                    if( item == "true"){
+                        editableParams.getComponent().setText("--skipInstallFeatureCheckBox=true");
+                    } else if (item == "false") {
+                        editableParams.getComponent().setText("--skipInstallFeatureCheckBox=false");
+                    }
+                }
+            }
+        });
    }
+
+
 
     @Override
     protected void resetEditorFrom(@NotNull LibertyRunConfiguration configuration) {
