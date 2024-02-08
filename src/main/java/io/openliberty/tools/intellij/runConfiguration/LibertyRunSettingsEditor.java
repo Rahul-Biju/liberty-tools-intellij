@@ -18,11 +18,17 @@ import com.intellij.ui.EditorTextField;
 import com.intellij.ui.StateRestoringCheckBox;
 import io.openliberty.tools.intellij.LibertyModules;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.regex.Pattern;
 
 /**
  * Editor associated with Liberty run & debug configurations. Defines when configuration changes are updated, default values, etc.
@@ -68,12 +74,18 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
                     comboBox1.setEnabled(true);
-                    editableParams.getComponent().setText("--DHotTest=true");
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " +"--DHotTest=" + comboBox1.getSelectedItem());
 
 
                 } else {//checkbox has been deselected
                     comboBox1.setEnabled(false);
-                    editableParams.getComponent().setText("");
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("DHotTest")) {
+                        String regex = "\\s*--DHotTest=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
+
                 }
             }
 
@@ -84,12 +96,13 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Object item = e.getItem();
-                    if( item == "true"){
-                        editableParams.getComponent().setText("--DHotTest=true");
-                    } else if (item == "false") {  // add false to textArea
-                        editableParams.getComponent().setText("--DHotTest=false");
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("DHotTest")) {
+                        String regex = "\\s*--DHotTest=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
                     }
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--DHotTest=" + e.getItem().toString());
                 }
             }
         });
@@ -99,12 +112,18 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
                     comboBox2.setEnabled(true);
-                    editableParams.getComponent().setText("--skipTests=true");
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " +"--skipTest=" + comboBox1.getSelectedItem());
 
 
                 } else {//checkbox has been deselected
                     comboBox2.setEnabled(false);
-                    editableParams.getComponent().setText("");
+                   // editableParams.getComponent().setText("");
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("DHotTest")) {
+                        String regex = "\\s*--skipTest=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
                 }
 
             }
@@ -116,12 +135,52 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Object item = e.getItem();
-                    if( item == "true"){
-                        editableParams.getComponent().setText("--skipTests=true");
-                    } else if (item == "false") {
-                        editableParams.getComponent().setText("--skipTests=false");
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("skipTest")) {
+                        String regex = "\\s*--skipTest=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
                     }
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--skipTest=" + e.getItem().toString());
+                }
+            }
+        });
+
+        libertyDebugCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    comboBox3.setEnabled(true);
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " +"--libertyDebug=" + comboBox3.getSelectedItem());
+
+
+                } else {//checkbox has been deselected
+                    comboBox3.setEnabled(false);
+                    // editableParams.getComponent().setText("");
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("libertyDebug")) {
+                        String regex = "\\s*--libertyDebug=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
+                }
+
+            }
+
+        });
+
+        comboBox3.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("libertyDebug")) {
+                        String regex = "\\s*--libertyDebug=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--libertyDebug=" + e.getItem().toString());
                 }
             }
         });
@@ -133,13 +192,56 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
                 a7777TextField.setEnabled(isSelected); // Enable or disable textField1
                 if (isSelected) {
                     // If the checkbox is selected, update textField2 with textField1's content
-                    editableParams.getComponent().setText("--libertyDebugPort=7777");
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--libertyDebugPort=" + a7777TextField.getText());
                 } else {
-                    // If the checkbox is deselected, clear textField2
-                    editableParams.getComponent().setText("");
+
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("libertyDebugPort")) {
+                        String regex = "\\s*--libertyDebugPort=\\d*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
                 }
             }
         });
+
+        a7777TextField.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void changedUpdate(DocumentEvent e){
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("libertyDebugPort")) {
+                    //String regex = Pattern.quote("--libertyDebugPort=") + ".*?" + Pattern.quote(" ");
+                    //String editableParamValue1 = editableParamValue.replaceAll(regex, "");
+                    String regex = "\\s*--libertyDebugPort=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--libertyDebugPort=" + a7777TextField.getText());
+            }
+            public void removeUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("libertyDebugPort")) {
+                    String regex = "\\s*--libertyDebugPort=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--libertyDebugPort=" + a7777TextField.getText());
+            }
+            public void insertUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("libertyDebugPort")) {
+                    String regex = "\\s*--libertyDebugPort=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--libertyDebugPort=" + a7777TextField.getText());
+            }
+        });
+
 
         compileWaitCheckBox.addItemListener(new ItemListener() {
             @Override
@@ -148,11 +250,51 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
                 a05TextField.setEnabled(isSelected); // Enable or disable textField1
                 if (isSelected) {
                     // If the checkbox is selected, update textField2 with textField1's content
-                    editableParams.getComponent().setText("--compileWait=0.5");
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--compileWait=" + a05TextField.getText());
                 } else {
-                    // If the checkbox is deselected, clear textField2
-                    editableParams.getComponent().setText("");
+
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("compileWait")) {
+                        String regex = "\\s*--compileWait=\\d*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
                 }
+            }
+        });
+
+        a05TextField.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void changedUpdate(DocumentEvent e){
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("compileWait")) {
+                    String regex = "\\s*--compileWait=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--compileWait=" + a05TextField.getText());
+            }
+            public void removeUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("compileWait")) {
+                    String regex = "\\s*--compileWait=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--compileWait=" + a05TextField.getText());
+            }
+            public void insertUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("compileWait")) {
+                    String regex = "\\s*--compileWait=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--compileWait=" + a05TextField.getText());
             }
         });
 
@@ -163,15 +305,55 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
                 a90TextField.setEnabled(isSelected); // Enable or disable textField1
                 if (isSelected) {
                     // If the checkbox is selected, update textField2 with textField1's content
-                    editableParams.getComponent().setText("--serverStartTimeout=90");
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--serverTimeout=" + a90TextField.getText());
                 } else {
-                    // If the checkbox is deselected, clear textField2
-                    editableParams.getComponent().setText("");
+
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("serverTimeout")) {
+                        String regex = "\\s*--serverTimeout=\\d*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
                 }
             }
         });
 
-        verifyAppStartTimeoutCheckBox.addItemListener(new ItemListener() {
+        a90TextField.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void changedUpdate(DocumentEvent e){
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("serverTimeout")) {
+                    String regex = "\\s*--serverTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--serverTimeout=" + a90TextField.getText());
+            }
+            public void removeUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("serverTimeout")) {
+                    String regex = "\\s*--serverTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--serverTimeout=" + a90TextField.getText());
+            }
+            public void insertUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("serverTimeout")) {
+                    String regex = "\\s*--serverTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--serverTimeout=" + a90TextField.getText());
+            }
+        });
+
+        /*verifyAppStartTimeoutCheckBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
@@ -184,21 +366,84 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
                     editableParams.getComponent().setText("");
                 }
             }
+        });*/
+
+        verifyAppStartTimeoutCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+                a30TextField.setEnabled(isSelected); // Enable or disable textField1
+                if (isSelected) {
+                    // If the checkbox is selected, update textField2 with textField1's content
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());
+                } else {
+
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("verifyTimeout")) {
+                        String regex = "\\s*--verifyTimeout=\\d*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
+                }
+            }
+        });
+
+        a30TextField.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void changedUpdate(DocumentEvent e){
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("verifyTimeout")) {
+                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());
+            }
+            public void removeUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("verifyTimeout")) {
+                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());
+            }
+            public void insertUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("verifyTimeout")) {
+                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());
+            }
         });
 
         generateFeaturesCheckBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
-                comboBox4.setEnabled(isSelected); // Enable or disable textField1
-                if (isSelected) {
-                    // If the checkbox is selected, update textField2 with textField1's content
-                    editableParams.getComponent().setText("--generateFeaturesCheckBox=true");
-                } else {
-                    // If the checkbox is deselected, clear textField2
-                    editableParams.getComponent().setText("");
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    comboBox4.setEnabled(true);
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " +"--generateFeature=" + comboBox4.getSelectedItem());
+
+
+                } else {//checkbox has been deselected
+                    comboBox4.setEnabled(false);
+                    // editableParams.getComponent().setText("");
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("generateFeature")) {
+                        String regex = "\\s*--generateFeature=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
                 }
+
             }
+
         });
 
         comboBox4.addItemListener(new ItemListener() {
@@ -206,17 +451,18 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Object item = e.getItem();
-                    if( item == "true"){
-                        editableParams.getComponent().setText("--generateFeaturesCheckBox=true");
-                    } else if (item == "false") {
-                        editableParams.getComponent().setText("--generateFeaturesCheckBox=false");
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("generateFeature")) {
+                        String regex = "\\s*--generateFeature=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
                     }
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--generateFeature=" + e.getItem().toString());
                 }
             }
         });
 
-        skipInstallFeatureCheckBox.addItemListener(new ItemListener() {
+        /*skipInstallFeatureCheckBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
@@ -244,11 +490,48 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
                     }
                 }
             }
+        });*/
+        skipInstallFeatureCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    comboBox5.setEnabled(true);
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " +"--skipInstall=" + comboBox5.getSelectedItem());
+
+
+                } else {//checkbox has been deselected
+                    comboBox5.setEnabled(false);
+                    // editableParams.getComponent().setText("");
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("skipInstall")) {
+                        String regex = "\\s*--skipInstall=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
+                }
+
+            }
+
         });
+
+        comboBox5.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("skipInstall")) {
+                        String regex = "\\s*--skipInstall=\\w*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
+                    editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--skipInstall=" + e.getItem().toString());
+                }
+            }
+        });
+
    }
-
-
-
+   
     @Override
     protected void resetEditorFrom(@NotNull LibertyRunConfiguration configuration) {
 

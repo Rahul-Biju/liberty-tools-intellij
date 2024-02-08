@@ -63,6 +63,7 @@
         </constraints>
         <properties>
           <doubleBuffered value="false"/>
+          <enabled value="true"/>
           <verifyInputWhenFocusTarget value="true"/>
           <visible value="false"/>
         </properties>
@@ -135,7 +136,7 @@
             <properties>
               <doubleBuffered value="false"/>
               <enabled value="false"/>
-              <text value="0.5"/>
+              <text value="5"/>
             </properties>
           </component>
           <component id="dca6f" class="javax.swing.JCheckBox" binding="serverStartTimeoutCheckBox" default-binding="true">
