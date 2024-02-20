@@ -30,10 +30,13 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private LabeledComponent<EditorTextField> editableParams;
     private LabeledComponent<ComboBox> libertyModule;
     private StateRestoringCheckBox runInContainerCheckBox;
-    private JComboBox comboBox1;
+    private JComboBox<ComboBoxItem> comboBox1;
 
     public LibertyRunSettingsEditor(Project project) {
         libertyModule.getComponent().setModel(new DefaultComboBoxModel(LibertyModules.getInstance().getLibertyBuildFilesAsString(project).toArray()));
+        comboBox1.addItem(new ComboBoxItem("Display Item 1", "Value1"));
+        comboBox1.addItem(new ComboBoxItem("Display Item 2", "Value2"));
+        comboBox1.addItem(new ComboBoxItem("Display Item 3", "Value3"));
     }
 
     @Override
@@ -72,5 +75,29 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         editableParams = new LabeledComponent<>();
         editableParams.setComponent(new EditorTextField());
         runInContainerCheckBox = new StateRestoringCheckBox();
+       // comboBox1.addItem("test");
+        //String[] items = {"Item 1", "Item 2", "Item 3"};
+       /* comboBox1 = new JComboBox<>();
+        comboBox1.addItem("test2");*/
+
+    }
+    class ComboBoxItem {
+        private String displayValue;
+        private String actualValue;
+        public ComboBoxItem(String displayValue, String actualValue) {
+            this.displayValue = displayValue;
+            this.actualValue = actualValue;
+        }
+        public String getDisplayValue() {
+            return displayValue;
+        }
+        public String getActualValue() {
+            return actualValue;
+        }
+        // The JComboBox will use this method to determine what text to display for each item
+        @Override
+        public String toString() {
+            return actualValue;
+        }
     }
 }

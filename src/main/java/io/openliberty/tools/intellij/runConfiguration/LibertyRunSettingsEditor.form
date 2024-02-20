@@ -75,17 +75,7 @@
             </constraints>
             <properties>
               <editable value="true"/>
-              <model>
-                <item value="hotTest --hotTest=true;"/>
-                <item value="skipTest --skipTest=true;"/>
-                <item value="libertyDebug"/>
-                <item value="libertyDebugPort --libertyDebugPort=7777"/>
-                <item value="compileWait --compileWait=0.5"/>
-                <item value="serverStartTimeout"/>
-                <item value="verifyAppStartTimeout"/>
-                <item value="generateFeatures"/>
-                <item value="skipInstallFeature"/>
-              </model>
+              <model/>
             </properties>
           </component>
         </children>
