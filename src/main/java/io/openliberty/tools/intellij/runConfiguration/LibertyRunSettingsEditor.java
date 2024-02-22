@@ -20,6 +20,12 @@ import io.openliberty.tools.intellij.LibertyModules;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Editor associated with Liberty run & debug configurations. Defines when configuration changes are updated, default values, etc.
@@ -31,12 +37,67 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private LabeledComponent<ComboBox> libertyModule;
     private StateRestoringCheckBox runInContainerCheckBox;
     private JComboBox<ComboBoxItem> comboBox1;
+    private JTextField textField1;
+    private JComboBox comboBox2;
+    private  JTextField textField2;
+    private  JList list1;
+    private  JScrollPane scrollpane1;
+
+    private static List<String> selectedItems = new ArrayList<>();
 
     public LibertyRunSettingsEditor(Project project) {
         libertyModule.getComponent().setModel(new DefaultComboBoxModel(LibertyModules.getInstance().getLibertyBuildFilesAsString(project).toArray()));
         comboBox1.addItem(new ComboBoxItem("Display Item 1", "Value1"));
         comboBox1.addItem(new ComboBoxItem("Display Item 2", "Value2"));
         comboBox1.addItem(new ComboBoxItem("Display Item 3", "Value3"));
+
+
+        comboBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox cb = (JComboBox) e.getSource();
+                String selectedItem = (String) cb.getSelectedItem();
+                // Toggle selection
+                if (selectedItems.contains(selectedItem)) {
+                    selectedItems.remove(selectedItem);
+                } else {
+                    selectedItems.add(selectedItem);
+                }
+                // Update text field
+                updateTextField(textField1);
+            }
+        });
+
+        list1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        textField2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                toggleListVisibility();
+            }
+        });
+        // Update text field when list selection changes and hide list
+        list1.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateTextField1();
+                scrollpane1.setVisible(false);
+            }
+        });
+    }
+
+    private  void toggleListVisibility() {
+        scrollpane1.setVisible(!scrollpane1.isVisible());
+        // Repack the frame or revalidate the container to adjust layout
+        scrollpane1.revalidate();
+    }
+    private  void updateTextField1() {
+        List<String> selectedValuesList = list1.getSelectedValuesList();
+        textField2.setText(String.join(", ", selectedValuesList));
+    }
+
+    private static void updateTextField(JTextField textField) {
+        String text = String.join(", ", selectedItems);
+        textField.setText(text);
     }
 
     @Override
