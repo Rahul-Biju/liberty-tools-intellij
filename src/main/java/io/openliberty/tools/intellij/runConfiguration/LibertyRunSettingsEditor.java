@@ -18,17 +18,13 @@ import com.intellij.ui.EditorTextField;
 import com.intellij.ui.StateRestoringCheckBox;
 import io.openliberty.tools.intellij.LibertyModules;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.regex.Pattern;
 
 /**
  * Editor associated with Liberty run & debug configurations. Defines when configuration changes are updated, default values, etc.
@@ -60,6 +56,8 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private JComboBox comboBox3;
     private JComboBox comboBox4;
     private JComboBox comboBox5;
+    private JCheckBox otherCheckBox;
+    private JTextField textField1;
 
     JButton bt2 = new JButton();
 
@@ -530,6 +528,61 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             }
         });
 
+        otherCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+                textField1.setEnabled(isSelected); // Enable or disable textField1
+                if (isSelected) {
+                    // If the checkbox is selected, update textField2 with textField1's content
+                    editableParams.getComponent().setText(textField1.getText());
+                } /*else {
+
+                    String editableParamValue = editableParams.getComponent().getText();
+                    if (editableParamValue.contains("verifyTimeout")) {
+                        String regex = "\\s*--verifyTimeout=\\d*\\s*";
+                        String result = editableParamValue.replaceAll(regex, " ").trim();
+                        editableParams.getComponent().setText(result);
+                    }
+                }*/
+            }
+        });
+
+       /* textField1.getDocument().addDocumentListener(new DocumentListener() {
+
+            *//*public void changedUpdate(DocumentEvent e){
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("verifyTimeout")) {
+                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());
+            }
+            public void removeUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("verifyTimeout")) {
+                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }*//*
+                // This method is called when more text is added to the text field.
+               *//* editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());*//*
+            *//*}
+            public void insertUpdate(DocumentEvent e) {
+                String editableParamValue = editableParams.getComponent().getText();
+                if (editableParamValue.contains("verifyTimeout")) {
+                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
+                    String result = editableParamValue.replaceAll(regex, " ").trim();
+                    editableParams.getComponent().setText(result);
+                }
+                // This method is called when more text is added to the text field.
+                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());
+            }*//*
+        });*/
+
    }
    
     @Override
@@ -560,7 +613,7 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     @Override
     protected JComponent createEditor() {
       //  root.setSize(new Dimension(2000, 2000));
-        root.setPreferredSize(new Dimension(750,210));
+        root.setPreferredSize(new Dimension(750,300));
         return root;
     }
 
