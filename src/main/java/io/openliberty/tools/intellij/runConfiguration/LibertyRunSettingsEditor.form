@@ -104,17 +104,25 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <visible value="false"/>
+            </properties>
           </component>
           <component id="cd581" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <editable value="true"/>
               <model>
-                <item value="hotTest"/>
-                <item value="skipTest"/>
-                <item value="debugPort=777"/>
+                <item value="--DhotTest=true"/>
+                <item value="--DskipTest=true"/>
+                <item value="--libertyDebug=true"/>
+                <item value="--libertydebugPort=7777"/>
+                <item value="--compileWait=5"/>
+                <item value="--serverStartTimeout=90"/>
+                <item value="--generateFeatures=true"/>
+                <item value="--skipInstallFeature=true"/>
               </model>
             </properties>
           </component>
@@ -126,7 +134,7 @@
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <visible value="true"/>
+          <visible value="false"/>
         </properties>
         <border type="none"/>
         <children>
