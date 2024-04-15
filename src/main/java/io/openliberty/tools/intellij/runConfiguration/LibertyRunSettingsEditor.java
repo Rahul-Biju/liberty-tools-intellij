@@ -9,6 +9,9 @@
  ******************************************************************************/
 package io.openliberty.tools.intellij.runConfiguration;
 
+import com.intellij.openapi.externalSystem.service.ui.command.line.CommandLineField;
+import com.intellij.openapi.externalSystem.service.ui.command.line.CommandLineInfo;
+import com.intellij.openapi.externalSystem.service.ui.command.line.CompletionTableInfo;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
@@ -18,8 +21,11 @@ import com.intellij.ui.EditorTextField;
 import com.intellij.ui.StateRestoringCheckBox;
 import io.openliberty.tools.intellij.LibertyModules;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.plugins.gradle.service.execution.GradleCommandLineInfo;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Editor associated with Liberty run & debug configurations. Defines when configuration changes are updated, default values, etc.
@@ -31,9 +37,21 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private LabeledComponent<ComboBox> libertyModule;
     private StateRestoringCheckBox runInContainerCheckBox;
     private JComboBox comboBox1;
+    private CommandLineField commandLineField1;
+    private Project pro;
 
     public LibertyRunSettingsEditor(Project project) {
-        libertyModule.getComponent().setModel(new DefaultComboBoxModel(LibertyModules.getInstance().getLibertyBuildFilesAsString(project).toArray()));
+       pro = project;
+//
+      libertyModule.getComponent().setModel(new DefaultComboBoxModel(LibertyModules.getInstance().getLibertyBuildFilesAsString(project).toArray()));
+
+
+
+
+        GradleCommandLineInfo gradlinfo = new GradleCommandLineInfo(project,null);
+
+        commandLineField1 = new CommandLineField(project,gradlinfo);
+
     }
 
     @Override
@@ -72,5 +90,8 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         editableParams = new LabeledComponent<>();
         editableParams.setComponent(new EditorTextField());
         runInContainerCheckBox = new StateRestoringCheckBox();
+
+        GradleCommandLineInfo gradlinfo = new GradleCommandLineInfo(pro,null);
+        commandLineField1 = new CommandLineField(pro,gradlinfo);
     }
 }
