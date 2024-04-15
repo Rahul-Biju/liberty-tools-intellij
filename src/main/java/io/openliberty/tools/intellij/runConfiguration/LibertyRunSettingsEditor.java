@@ -136,11 +136,6 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         editableParams = new LabeledComponent<>();
         editableParams.setComponent(new EditorTextField());
         runInContainerCheckBox = new StateRestoringCheckBox();
-       // comboBox1.addItem("test");
-        //String[] items = {"Item 1", "Item 2", "Item 3"};
-       /* comboBox1 = new JComboBox<>();
-        comboBox1.addItem("test2");*/
-
     }
     class ComboBoxItem {
         private String displayValue;
@@ -155,7 +150,6 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         public String getActualValue() {
             return actualValue;
         }
-        // The JComboBox will use this method to determine what text to display for each item
         @Override
         public String toString() {
             return actualValue;
