@@ -65,7 +65,7 @@
           <doubleBuffered value="false"/>
           <enabled value="true"/>
           <verifyInputWhenFocusTarget value="true"/>
-          <visible value="true"/>
+          <visible value="false"/>
         </properties>
         <border type="none"/>
         <children>

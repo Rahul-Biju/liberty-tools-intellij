@@ -351,20 +351,6 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             }
         });
 
-        /*verifyAppStartTimeoutCheckBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
-                a30TextField.setEnabled(isSelected); // Enable or disable textField1
-                if (isSelected) {
-                    // If the checkbox is selected, update textField2 with textField1's content
-                    editableParams.getComponent().setText("--verifyAppStartTimeoutCheckBox=30");
-                } else {
-                    // If the checkbox is deselected, clear textField2
-                    editableParams.getComponent().setText("");
-                }
-            }
-        });*/
 
         verifyAppStartTimeoutCheckBox.addItemListener(new ItemListener() {
             @Override
@@ -460,35 +446,6 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             }
         });
 
-        /*skipInstallFeatureCheckBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
-                comboBox5.setEnabled(isSelected); // Enable or disable textField1
-                if (isSelected) {
-                    // If the checkbox is selected, update textField2 with textField1's content
-                    editableParams.getComponent().setText("--skipInstallFeatureCheckBox=true");
-                } else {
-                    // If the checkbox is deselected, clear textField2
-                    editableParams.getComponent().setText("");
-                }
-            }
-        });
-
-        comboBox5.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Object item = e.getItem();
-                    if( item == "true"){
-                        editableParams.getComponent().setText("--skipInstallFeatureCheckBox=true");
-                    } else if (item == "false") {
-                        editableParams.getComponent().setText("--skipInstallFeatureCheckBox=false");
-                    }
-                }
-            }
-        });*/
         skipInstallFeatureCheckBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -548,40 +505,6 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
             }
         });
 
-       /* textField1.getDocument().addDocumentListener(new DocumentListener() {
-
-            *//*public void changedUpdate(DocumentEvent e){
-                String editableParamValue = editableParams.getComponent().getText();
-                if (editableParamValue.contains("verifyTimeout")) {
-                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
-                    String result = editableParamValue.replaceAll(regex, " ").trim();
-                    editableParams.getComponent().setText(result);
-
-                }
-                // This method is called when more text is added to the text field.
-                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());
-            }
-            public void removeUpdate(DocumentEvent e) {
-                String editableParamValue = editableParams.getComponent().getText();
-                if (editableParamValue.contains("verifyTimeout")) {
-                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
-                    String result = editableParamValue.replaceAll(regex, " ").trim();
-                    editableParams.getComponent().setText(result);
-                }*//*
-                // This method is called when more text is added to the text field.
-               *//* editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());*//*
-            *//*}
-            public void insertUpdate(DocumentEvent e) {
-                String editableParamValue = editableParams.getComponent().getText();
-                if (editableParamValue.contains("verifyTimeout")) {
-                    String regex = "\\s*--verifyTimeout=\\d*\\s*";
-                    String result = editableParamValue.replaceAll(regex, " ").trim();
-                    editableParams.getComponent().setText(result);
-                }
-                // This method is called when more text is added to the text field.
-                editableParams.getComponent().setText(editableParams.getComponent().getText() + " " + "--verifyTimeout=" + a30TextField.getText());
-            }*//*
-        });*/
 
    }
    
