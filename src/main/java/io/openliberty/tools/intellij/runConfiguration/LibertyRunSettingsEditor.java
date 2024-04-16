@@ -9,6 +9,7 @@
  ******************************************************************************/
 package io.openliberty.tools.intellij.runConfiguration;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.externalSystem.service.ui.command.line.CommandLineField;
 import com.intellij.openapi.externalSystem.service.ui.project.path.WorkingDirectoryField;
 import com.intellij.openapi.options.ConfigurationException;
@@ -16,10 +17,12 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.LabeledComponent;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.ui.EditorTextField;
 import com.intellij.ui.StateRestoringCheckBox;
 import io.openliberty.tools.intellij.LibertyModules;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.maven.execution.run.configuration.MavenWorkingDirectoryInfo;
 import org.jetbrains.plugins.gradle.service.execution.GradleCommandLineInfo;
 
 import javax.swing.*;
@@ -38,12 +41,20 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
 
     private Project pro;
 
+
+
     public LibertyRunSettingsEditor(Project project) {
+
+
+
+
         pro = project;
 
         libertyModule.getComponent().setModel(new DefaultComboBoxModel(LibertyModules.getInstance().getLibertyBuildFilesAsString(project).toArray()));
 
-        GradleCommandLineInfo gradlinfo = new GradleCommandLineInfo(project,new WorkingDirectoryField(project,));
+        GradleCommandLineInfo gradlinfo = new GradleCommandLineInfo(project,new WorkingDirectoryField(project,new MavenWorkingDirectoryInfo(project),Disposer.newDisposable()));
+        commandLineField1 = new CommandLineField(project,gradlinfo,Disposer.newDisposable());
+
 
     }
 
@@ -84,6 +95,9 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         editableParams.setComponent(new EditorTextField());
         runInContainerCheckBox = new StateRestoringCheckBox();
 
-        GradleCommandLineInfo gradlinfo = new GradleCommandLineInfo(pro,null);
+        if(pro !=null) {
+            GradleCommandLineInfo gradlinfo = new GradleCommandLineInfo(pro, new WorkingDirectoryField(pro, new MavenWorkingDirectoryInfo(pro),Disposer.newDisposable()));
+            commandLineField1 = new CommandLineField(pro,gradlinfo,Disposer.newDisposable());
+        }
     }
 }
