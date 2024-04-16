@@ -9,6 +9,8 @@
  ******************************************************************************/
 package io.openliberty.tools.intellij.runConfiguration;
 
+import com.intellij.openapi.externalSystem.service.ui.command.line.CommandLineField;
+import com.intellij.openapi.externalSystem.service.ui.project.path.WorkingDirectoryField;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
@@ -18,6 +20,7 @@ import com.intellij.ui.EditorTextField;
 import com.intellij.ui.StateRestoringCheckBox;
 import io.openliberty.tools.intellij.LibertyModules;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.plugins.gradle.service.execution.GradleCommandLineInfo;
 
 import javax.swing.*;
 
@@ -30,9 +33,18 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
     private LabeledComponent<EditorTextField> editableParams;
     private LabeledComponent<ComboBox> libertyModule;
     private StateRestoringCheckBox runInContainerCheckBox;
+    private WorkingDirectoryField workingDirectoryField1;
+    private CommandLineField commandLineField1;
+
+    private Project pro;
 
     public LibertyRunSettingsEditor(Project project) {
+        pro = project;
+
         libertyModule.getComponent().setModel(new DefaultComboBoxModel(LibertyModules.getInstance().getLibertyBuildFilesAsString(project).toArray()));
+
+        GradleCommandLineInfo gradlinfo = new GradleCommandLineInfo(project,new WorkingDirectoryField(project,));
+
     }
 
     @Override
@@ -71,5 +83,7 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
         editableParams = new LabeledComponent<>();
         editableParams.setComponent(new EditorTextField());
         runInContainerCheckBox = new StateRestoringCheckBox();
+
+        GradleCommandLineInfo gradlinfo = new GradleCommandLineInfo(pro,null);
     }
 }
