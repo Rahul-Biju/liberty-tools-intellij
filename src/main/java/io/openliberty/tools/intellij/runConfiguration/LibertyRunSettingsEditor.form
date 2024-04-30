@@ -49,17 +49,19 @@
           <verticalAlignment value="3"/>
         </properties>
       </component>
-      <component id="8f10f" class="com.intellij.openapi.externalSystem.service.ui.project.path.WorkingDirectoryField" binding="workingDirectoryField1" custom-create="true" default-binding="true">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="a5d70" class="com.intellij.openapi.externalSystem.service.ui.command.line.CommandLineField" binding="commandLineField1" custom-create="true" default-binding="true">
+      <component id="98a80" class="com.intellij.openapi.externalSystem.service.ui.project.path.WorkingDirectoryField" binding="workingDirectoryField1" custom-create="true" default-binding="true">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
+      </component>
+      <component id="4c1fd" class="com.intellij.openapi.externalSystem.service.ui.command.line.CommandLineField" binding="commandLineField1" custom-create="true" default-binding="true">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
       </component>
     </children>
   </grid>
