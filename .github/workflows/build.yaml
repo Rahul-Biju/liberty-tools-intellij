@@ -71,3 +71,11 @@ jobs:
           name: ${{ matrix.reportName }}
           path: |
             liberty-tools-intellij/build/reports/
+            
+            # Send Slack notification
+      - name: Send Slack notification
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Build completed for branch: ${{ github.ref }} with status: ${{ job.status }}"}' $SLACK_WEBHOOK_URL
