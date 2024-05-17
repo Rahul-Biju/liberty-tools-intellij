@@ -86,7 +86,7 @@ jobs:
 
 
       - name: Slack Notification
-        if: always() # Ensure the notification is sent regardless of job status
+        if: always() # Ensure the notification is sent regardless of job statuses
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
             "text": "Workflow ${{ github.workflow }} triggered by branch ${{ github.ref }}. PR: ${{ github.event.pull_request.html_url }}. Build results: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. Status: ${{ job.status }}",
