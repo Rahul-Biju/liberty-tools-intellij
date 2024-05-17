@@ -73,9 +73,13 @@ jobs:
             liberty-tools-intellij/build/reports/
             
             # Send Slack notification
-      - name: Send Slack notification
-        if: always()
+
+      - name: Slack Notification
+        if: always() # Ensure the notification is sent regardless of job status
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{
+            "text": "Workflow ${{ github.workflow }} triggered by branch ${{ github.ref }}. PR: ${{ github.event.pull_request.html_url }}. Status: ${{ job.status }}",
+            "channel": "#your-channel-name"
+          }' $SLACK_WEBHOOK_URL
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text": "GitHub Action PR ${{ steps.pr_action.outputs.action }}: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}}' $SLACK_WEBHOOK_URL
