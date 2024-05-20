@@ -61,11 +61,7 @@ public class LibertyRunSettingsEditor extends SettingsEditor<LibertyRunConfigura
 
 //        libertyModule.getComponent().setModel(difc);
 
-
-//        WorkingDirectoryInfo wrkinfo = new MavenWorkingDirectoryInfo(project);
-//
-//        workingDirectoryField1 = new WorkingDirectoryField(project, wrkinfo, null);
-
+        
 
         commandLineField1 = new CommandLineField(project, new LibertyCommandLineInfo() , Disposer.newDisposable());
 
