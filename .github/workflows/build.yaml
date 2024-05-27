@@ -1,10 +1,12 @@
 name: Build
+
 on:
   workflow_dispatch:
   push:
     branches: '**'
   pull_request:
     branches: [ main, code-action-unification ]
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -22,8 +24,6 @@ jobs:
           - runtime: windows
             os: windows-latest
             reportName: windows-test-report
-    env:
-      TEST_STATUS: success
     steps:
       - name: Configure pagefile
         if: contains(matrix.os, 'windows')
@@ -45,12 +45,15 @@ jobs:
       - name: 'Install required integration test software'
         working-directory: ./liberty-tools-intellij
         run: bash ./src/test/resources/ci/scripts/setup.sh
+        shell: bash
       - name: 'Build lsp4ij jar and publish to local Maven repository'
         working-directory: ./lsp4ij
         run: bash ./gradlew publishToMavenLocal
+        shell: bash
       - name: 'Build Liberty-Tools-Intellij'
         working-directory: ./liberty-tools-intellij
         run: bash ./gradlew buildPlugin
+        shell: bash
       - name: 'Archive artifacts'
         if: ${{ runner.os == 'Linux' && !failure() }}
         uses: actions/upload-artifact@v3
@@ -62,15 +65,11 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
       - name: 'Run UI integration tests'
-        id: integration-tests
         working-directory: ./liberty-tools-intellij
-        run: |
-          if ! bash ./src/test/resources/ci/scripts/run.sh; then
-            echo "TEST_STATUS=failed" >> $GITHUB_ENV
-            exit 1
-          fi
+        run: bash ./src/test/resources/ci/scripts/run.sh
+        shell: bash
       - name: 'Archive Test logs and reports'
-        if: ${{ always() }}
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.reportName }}
@@ -79,7 +78,8 @@ jobs:
       - name: 'Slack Notification'
         if: always() # Ensure the notification is sent regardless of job statuses
         run: |
-          STATUS=$([[ $TEST_STATUS == "success" ]] && echo "succeeded" || echo "failed")
+          STATUS=$([[ ${{ job.status }} == "success" ]] && echo "succeeded" || echo "failed")
           curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"Workflow ${{ github.workflow }} triggered by branch ${{ github.ref }}. PR: ${{ github.event.pull_request.html_url || 'N/A' }}. Build results: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. Status: $STATUS\"}" $SLACK_WEBHOOK_URL
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        shell: bash
