@@ -1,12 +1,10 @@
 name: Build
-
 on:
   workflow_dispatch:
   push:
     branches: '**'
   pull_request:
     branches: [ main, code-action-unification ]
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -62,10 +60,11 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
       - name: 'Run UI integration tests'
+        id: integration-tests
         working-directory: ./liberty-tools-intellij
         run: bash ./src/test/resources/ci/scripts/run.sh
       - name: 'Archive Test logs and reports'
-        if: ${{ failure() }}
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.reportName }}
@@ -74,7 +73,18 @@ jobs:
       - name: 'Slack Notification'
         if: always() # Ensure the notification is sent regardless of job statuses
         run: |
-          STATUS=$([[ ${{ job.status }} == "success" ]] && echo "succeeded" || echo "failed")
+          if [[ ${{ steps.integration-tests.outcome }} == 'failure' ]]; then
+            STATUS="failed"
+          else
+            STATUS="succeeded"
+          fi
           curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"Workflow ${{ github.workflow }} triggered by branch ${{ github.ref }}. PR: ${{ github.event.pull_request.html_url || 'N/A' }}. Build results: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. Status: $STATUS\"}" $SLACK_WEBHOOK_URL
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+
+
+
+
+
